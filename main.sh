@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 src="hello-mpi"
 out="$HOME/Logs/$src$1.log"
+module load hpcx-2.7.0/hpcx-ompi
 ulimit -s unlimited
 printf "" > "$out"
 
@@ -13,7 +14,7 @@ cd $src
 
 # Fixed config
 : "${TYPE:=double}"
-: "${MAX_THREADS:=32}"
+: "${MAX_THREADS:=8}"
 : "${REPEAT_BATCH:=5}"
 : "${REPEAT_METHOD:=1}"
 # Define macros (dont forget to add here)
@@ -27,7 +28,7 @@ DEFINES=(""
 # Run
 HOSTS="node01,node02,node03,node04"; PROCS="4"
 mpic++ ${DEFINES[*]} -std=c++17 -O3 -fopenmp main.cxx -o "a$1.out"
-stdbuf --output=L mpiexec -host "$HOSTS" -np "$PROCS" ./"a$1.out" ~/Data/soc-Epinions1.mtx   2>&1 | tee -a "$out"
+stdbuf --output=L mpiexec -np "$PROCS" ./"a$1.out" ~/Data/soc-Epinions1.mtx   2>&1 | tee -a "$out"
 # stdbuf --output=L ./"a$1.out" ~/Data/indochina-2004.mtx  2>&1 | tee -a "$out"
 # stdbuf --output=L ./"a$1.out" ~/Data/uk-2002.mtx         2>&1 | tee -a "$out"
 # stdbuf --output=L ./"a$1.out" ~/Data/arabic-2005.mtx     2>&1 | tee -a "$out"
