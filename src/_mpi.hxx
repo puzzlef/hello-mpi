@@ -4,36 +4,55 @@
 
 
 
+// HELPERS
+// -------
+
+inline int mpi_comm_size(MPI_Comm comm=MPI_COMM_WORLD) {
+  int size; MPI_Comm_size(comm, &size);
+  return size;
+}
+
+inline int mpi_comm_rank(MPI_Comm comm=MPI_COMM_WORLD) {
+  int rank; MPI_Comm_rank(comm, &rank);
+  return rank;
+}
+
+
+
+
 // TRY
 // ---
 // Log error if MPI function call fails.
 
 #ifndef TRY_MPI
-void tryMpi(int err, const char* exp, const char* func, int line, const char* file) {
+void tryFailedMpi(int err, const char* exp, const char* func, int line, const char* file) {
   char buf[MPI_MAX_ERROR_STRING]; int BUF;
-  if (err == MPI_SUCCESS) return;
   MPI_Error_string(err, buf, &BUF);
   fprintf(stderr,
-    "%s\n"
+    "ERROR: %s\n"
     "  in expression %s\n"
     "  at %s:%d in %s\n",
     buf, exp, func, line, file);
   MPI_Abort(MPI_COMM_WORLD, err);
 }
-
-#define TRY_MPI(exp)  tryMpi(exp, #exp, __func__, __LINE__, __FILE__)
-#define TRY_MPIE(exp) PERFORME(TRY_MPI(exp))
-#define TRY_MPIW(exp) PERFORMW(TRY_MPI(exp))
-#define TRY_MPII(exp) PERFORMI(TRY_MPI(exp))
-#define TRY_MPID(exp) PERFORMD(TRY_MPI(exp))
-#define TRY_MPIT(exp) PERFORMT(TRY_MPI(exp))
+#define TRY_MPI(exp)  do { int err = exp; if (err != MPI_SUCCESS) tryFailedMpi(err, #exp, __func__, __LINE__, __FILE__); } while (0)
 #endif
 
-#ifndef TRY
-#define TRY(exp)  TRY_MPI(exp)
-#define TRYE(exp) TRY_MPIE(exp)
-#define TRYW(exp) TRY_MPIW(exp)
-#define TRYI(exp) TRY_MPII(exp)
-#define TRYD(exp) TRY_MPID(exp)
-#define TRYT(exp) TRY_MPIT(exp)
+
+
+
+// ASSERT
+// -----
+// Assert that expression is true.
+
+#ifndef ASSERT_MPI
+void assertFailedMpi(const char* exp, const char* func, int line, const char* file) {
+  fprintf(stderr,
+    "ERROR: Assertion failed\n"
+    "  in expression %s\n"
+    "  at %s:%d in %s\n",
+    exp, func, line, file);
+  MPI_Abort(MPI_COMM_WORLD, 1);
+}
+#define ASSERT_MPI(exp)  do { if (!(exp)) assertFailedMpi(#exp, __func__, __LINE__, __FILE__); } while (0)
 #endif
