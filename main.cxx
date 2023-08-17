@@ -1,6 +1,4 @@
-#include <random>
 #include <cstdio>
-#include <iostream>
 #include "src/main.hxx"
 
 using namespace std;
@@ -8,24 +6,28 @@ using namespace std;
 
 
 
-// Fixed config
+#pragma region CONFIGURATION
 #ifndef MAX_THREADS
-#define MAX_THREADS 8
+/** Maximum number of threads to use. */
+#define MAX_THREADS 32
 #endif
 #ifndef REPEAT_METHOD
+/** Number of times to repeat each method. */
 #define REPEAT_METHOD 1
 #endif
+#pragma endregion
 
 
 
 
-// PERFORM EXPERIMENT
-// ------------------
-
+#pragma region METHODS
+#pragma region PERFORM EXPERIMENT
+/**
+ * Perform the experiment.
+ * @param p process rank (current process id)
+ * @param P number of processes
+ */
 void runExperiment(int p, int P) {
-  random_device dev;
-  default_random_engine rnd(dev());
-  int repeat = REPEAT_METHOD;
   #pragma omp parallel
   {
     int t = omp_get_thread_num();
@@ -34,6 +36,12 @@ void runExperiment(int p, int P) {
 }
 
 
+/**
+ * Main function.
+ * @param argc argument count
+ * @param argv argument values
+ * @returns zero on success, non-zero on failure
+ */
 int main(int argc, char **argv) {
   char pname[MPI_MAX_PROCESSOR_NAME];
   int p = 0, P = 0, lpname = 0;
@@ -49,3 +57,4 @@ int main(int argc, char **argv) {
   MPI_Finalize();
   return 0;
 }
+#pragma endregion

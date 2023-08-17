@@ -4,7 +4,7 @@
 
 
 
-#pragma region METHODS
+#pragma region MACROS
 #pragma region ERROR
 #ifndef TRY_MPI
 /**
@@ -60,10 +60,11 @@ void assertFailedMpi(const char* exp, const char* func, int line, const char* fi
 #define ASSERT_MPI(exp)  do { if (!(exp)) assertFailedMpi(#exp, __func__, __LINE__, __FILE__); } while (0)
 #endif
 #pragma endregion
+#pragma endregion
 
 
 
-
+#pragma region METHODS
 #pragma region BASIC
 /**
  * Get the size of the communicator.
