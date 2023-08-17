@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
-#SBATCH -N 2
-#SBATCH -n 32
-#SBATCH --mem-per-cpu=1024
-# scl enable gcc-toolset-11 bash
+#SBATCH --nodes=4
+#SBATCH --ntasks=4
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=64
+#SBATCH --exclusive
+#SBATCH --mem=30gb
+#SBATCH --job-name slurm
+#SBATCH --output=slurm.out
+# source scl_source enable gcc-toolset-11
 # module load hpcx-2.7.0/hpcx-ompi
+# module load openmpi/4.1.5
 src="hello-mpi"
 out="$HOME/Logs/$src$1.log"
-module load openmpi/4.1.5
+module load hpcx-2.7.0/hpcx-ompi
 ulimit -s unlimited
 printf "" > "$out"
 
@@ -22,6 +28,8 @@ cd $src
 : "${MAX_THREADS:=32}"
 : "${REPEAT_BATCH:=5}"
 : "${REPEAT_METHOD:=1}"
+# SLURM specific parameters
+: "${SLURM_NTASKS:=4}"
 # Define macros (dont forget to add here)
 DEFINES=(""
 "-DTYPE=$TYPE"
@@ -31,5 +39,9 @@ DEFINES=(""
 )
 
 # Run
+MPIRUN="mpirun -np $SLURM_NTASKS --map-by node --bind-to none --report-bindings"
 mpic++ ${DEFINES[*]} -std=c++17 -O3 -fopenmp main.cxx -o "a$1.out"
-stdbuf --output=L mpiexec -np 2 --map-by node ./"a$1.out" 2>&1 | tee -a "$out"
+stdbuf --output=L $MPIRUN ./"a$1.out" 2>&1 | tee -a "$out"
+
+# Signal completion
+curl -X POST "https://maker.ifttt.com/trigger/puzzlef/with/key/${IFTTT_KEY}?value1=$src$1"
