@@ -1,7 +1,6 @@
 #pragma once
 #include "_debug.hxx"
 #include "_iostream.hxx"
-
 #ifdef OPENMP
 #include "_openmp.hxx"
 #endif
