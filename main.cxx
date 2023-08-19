@@ -1,5 +1,5 @@
 #include <cstdio>
-#include "src/main.hxx"
+#include "inc/main.hxx"
 
 using namespace std;
 
