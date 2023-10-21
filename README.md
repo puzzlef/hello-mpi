@@ -1,10 +1,14 @@
-A basic example to output text to console from nodes over a network using [MPI].
+A basic "Hello world" example to output text to console from nodes over a network using [MPI].
 
 A cluster at [IIIT] has four [SLURM] nodes. We want to run one process on each
 node, and run `32` threads using [OpenMP]. In future, such a setup would allow
 us to run distributed algorithms that utilize each node's memory efficiently and
 minimize communication cost (within the same node). Output is saved in [gist].
 Technical help from [Semparithi Aravindan].
+
+> **Note**
+> You can just copy `main.sh` to your system and run it. \
+> For the code, refer to `main.cu`.
 
 <br>
 
