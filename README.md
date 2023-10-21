@@ -8,7 +8,7 @@ Technical help from [Semparithi Aravindan].
 
 > **Note**
 > You can just copy `main.sh` to your system and run it. \
-> For the code, refer to `main.cu`.
+> For the code, refer to `main.cxx`.
 
 <br>
 
@@ -91,6 +91,7 @@ $ sbatch main.sh
 
 [![](https://img.youtube.com/vi/c0C9mQaxsD4/maxresdefault.jpg)](https://www.youtube.com/watch?v=c0C9mQaxsD4)<br>
 [![ORG](https://img.shields.io/badge/org-puzzlef-green?logo=Org)](https://puzzlef.github.io)
+[![DOI](https://zenodo.org/badge/618287038.svg)](https://zenodo.org/doi/10.5281/zenodo.10030475)
 
 
 [Semparithi Aravindan]: https://www.iiit.ac.in/people/faculty/Semparithi.Aravindan/
