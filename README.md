@@ -92,7 +92,7 @@ $ sbatch main.sh
 [![](https://img.youtube.com/vi/c0C9mQaxsD4/maxresdefault.jpg)](https://www.youtube.com/watch?v=c0C9mQaxsD4)<br>
 [![ORG](https://img.shields.io/badge/org-puzzlef-green?logo=Org)](https://puzzlef.github.io)
 [![DOI](https://zenodo.org/badge/618287038.svg)](https://zenodo.org/doi/10.5281/zenodo.10030475)
-
+![](https://ga-beacon.deno.dev/G-KD28SG54JQ:hbAybl6nQFOtmVxW4if3xw/github.com/puzzlef/hello-mpi)
 
 [Semparithi Aravindan]: https://www.iiit.ac.in/people/faculty/Semparithi.Aravindan/
 [IIIT]:   https://www.iiit.ac.in
